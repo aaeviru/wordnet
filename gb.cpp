@@ -1,9 +1,9 @@
 #include "gb.h"
 const int BktSz = 4;
 const int SegSz = 512;
-#define INPUT "/home/ko/wordnet/result/sequence_n1.txt"
-#define SYNSET "/home/ko/wordnet/result/synlink_n.txt"
-#define RANK "/home/ko/wordnet/log/wordsp.txt"
+#define INPUT "/home/ec2-user/git/wordnet/result/sequence_n1.txt"
+#define SYNSET "/home/ec2-user/git/wordnet/result/synlink_n.txt"
+#define RANK "/home/ec2-user/git/wordnet/log/wordsp.txt"
 #define WORDNUM 249121
 
 int compare (const void * a, const void * b){
@@ -16,7 +16,11 @@ void wordqsort(Word* a,int start,int end){
 
 int wordsp[WORDNUM + 1];
 Word word[WORDNUM];
-int main(){
+int main(int argc,char** argv){
+   if(argc != 2){
+      printf("input:sequence file\n");
+      return -1;
+   }
    memset(wordsp,0,WORDNUM + 1);
    FILE* frank = fopen(RANK,"r");
    int wordid,sp;
@@ -26,7 +30,7 @@ int main(){
    fclose(frank);
    
    int i = 0;
-   FILE* fin = fopen(INPUT,"r");
+   FILE* fin = fopen(argv[1],"r");
    while(fscanf(fin,"%d",&wordid) != EOF){
       word[i].set(wordid,wordsp[wordid]);
       i++;
@@ -46,8 +50,8 @@ int main(){
          for(int j=0;j<BktSz;j++){
             if((i+Bkz*j)*SegSz+k >= N) continue;
             word[(i+Bkz*j)*SegSz+k].print();
-            if(word[(i+Bkz*j)*SegSz+k].spec < 1) getchar();
-            if(word[(i+Bkz*j)*SegSz+k].wordid == 209968) getchar();
+            //if(word[(i+Bkz*j)*SegSz+k].spec < 1) getchar();
+            //if(word[(i+Bkz*j)*SegSz+k].wordid == 209968) getchar();
          }
          printf("\n");
       }

@@ -16,6 +16,7 @@ result:
 	synlink_n.txt
 	synlink_jp.txt
 	synlink_jp_n.txt
+	gb.txt:term-basket
 	
 Makefile:make,clean
 run.sh:ex to run

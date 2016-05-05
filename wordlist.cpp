@@ -40,11 +40,22 @@ int main(){
       snprintf(sql,1000,"select lemma from word where wordid = %d",i);
       string term;
       ssql(db,sql,callback7,(void*)(&term));
-      vector<string> terms = split(term,'_');
+      vector<string> termss = split(term,' ');
       vector<string>::iterator it;
+      if(termss.size() > 1){
+         it=termss.begin();
+         term = *it;
+         for(it++;it!=termss.end();++it){
+            term = term +"_" + *it;
+         }
+         cout<<term<<endl;
+      }
+      vector<string> terms = split(term,'_');
       for(it=terms.begin();it!=terms.end();++it){
          if(word.find(*it) != word.end() ){
             fout<<i<<" "<<word[*it]<<" "<<term<<endl;
+         }else{
+            fout<<i<<" "<<term<<endl;
          }
       }
    }

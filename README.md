@@ -8,7 +8,7 @@ attack.py:attack wordnet-query with term-class-lsa
 log:  
 --wordsp.txt:term-specificit  
 result:  
---synset.txt::  
+--synset.txt  
 --sequence.txt:term-sequence  
 --sequence_n.txt  
 --sequence_jp.txt  

@@ -41,7 +41,7 @@ int main(int argc, char* argv[]){
    fclose(fp);
    fclose(fout);
    sqlite3_close(db);
-   printf("%s\n",total);
+   printf("%d\n",total);
    return 0;
 }
     

@@ -25,8 +25,10 @@ class Synset{
          return relationships;
       }
 };
+int callback2(void *data, int argc, char **argv, char **azColName);
 int callback3(void *data, int argc, char **argv, char **azColName);
 int callback4(void *data, int argc, char **argv, char **azColName);
+int callback5(void *data, int argc, char **argv, char **azColName);
 int callback6(void *data, int argc, char **argv, char **azColName);
 int callback7(void *data, int argc, char **argv, char **azColName);
 int ssql(sqlite3 *db,char* sql,int (*callback)(void*,int,char**,char**),void* data = NULL);

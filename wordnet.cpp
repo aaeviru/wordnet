@@ -2,15 +2,6 @@
 
 using namespace std;
 
-
-bool compare (Synset first, Synset second){
-  return ( first.rel() > second.rel() );
-}
-
-int tmpnum;
-list<Synset> synsetlist;
-
-FILE* fout;
 static int callback(void *data, int argc, char **argv, char **azColName){
    int i;
    
@@ -23,13 +14,13 @@ static int callback(void *data, int argc, char **argv, char **azColName){
    return 0;
 }
 
-static int callback2(void *data, int argc, char **argv, char **azColName){
-   tmpnum = atoi(argv[0]);
+int callback2(void *data, int argc, char **argv, char **azColName){
+   *(int*)data = atoi(argv[0]);
    return 0;
 }
 
-static int callback5(void *data, int argc, char **argv, char **azColName){
-   fprintf(fout,"%s\n",argv[0]);
+int callback5(void *data, int argc, char **argv, char **azColName){
+   fprintf((FILE*)data,"%s\n",argv[0]);
    return 0;
 }
 

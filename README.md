@@ -1,7 +1,11 @@
 # wordnet
-main.cpp:create term-sequence  
-gb.cpp:create term-basket from word-sequence  
-wordnet.cpp:functions about wordnet,sqlite  
+synset.cpp:	create synset list  
+synlink.cpp	sort synset by synlinks it has  
+main.cpp:	create term-sequence  
+gb.cpp:		create term-basket from word-sequence  
+wordnet.cpp:	functions about wordnet,sqlite  
+
+
 wnjpn.1.1.db,wnjpn.db:Japanese Wordnet  
 init.cpp:calculate term-specificit  
 attack.py:attack wordnet-query with term-class-lsa  

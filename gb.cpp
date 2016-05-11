@@ -1,6 +1,6 @@
 #include "gb.h"
-const int BktSz = 4;
-const int SegSz = 512;
+const int BktSz = 6;
+const int SegSz = 1296;
 #define INPUT "/home/ec2-user/git/wordnet/result/sequence_n1.txt"
 #define SYNSET "/home/ec2-user/git/wordnet/result/synlink_n.txt"
 #define RANK "/home/ec2-user/git/wordnet/log/wordsp.txt"

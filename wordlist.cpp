@@ -1,5 +1,5 @@
 #include "wordlist.h"
-#define INPUT "/home/ec2-user/data/wordslist_dsw.txt"
+#define INPUT "/home/ec2-user/git/statresult/wordslist_dsw.txt"
 #define WORDNUM 249121
 
 vector<string> split(const string &s, char delim) {
@@ -18,7 +18,7 @@ int main(){
    map<string,int> word;
    char term[200];
    FILE* fp = NULL;
-   fp = fopen("/home/ec2-user/data/wordslist_dsw.txt","r");
+   fp = fopen("/home/ec2-user/git/statresult/wordslist_dsw.txt","r");
    int num = 0;
    while(fscanf(fp,"%s\n",term) != EOF){
       word[string(term)] = num;

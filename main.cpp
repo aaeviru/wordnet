@@ -1,17 +1,18 @@
 #include "main.h"
 
-#define SYSLINK "/home/ko/wordnet/result/synlink.txt"
-#define RESULT "/home/ko/wordnet/result/sequence.txt"
-
 list< Seq > sqset;
 set<int> word;
 set<string> syn;
+int type;
 void ProcessSynset(sqlite3* db,const char* synset,vector<int>* sq){
    list< Seq >::iterator sqset_it;
    char sql[1000];
    int wordid[1000];
    wordid[0] = 0;
-   snprintf(sql,1000,"select wordid from sense where synset = '%s'",synset);
+   if( type == 0)
+      snprintf(sql,1000,"select wordid from sense where synset = '%s'",synset);
+   else
+      snprintf(sql,1000,"select wordid from sense where synset = '%s' and lang = 'jpn'",synset);
    //printf("%s\n",sql);
    ssql(db,sql,callback3,(void*)wordid);
    vector<int>::iterator iter;
@@ -34,7 +35,7 @@ void ProcessSynset(sqlite3* db,const char* synset,vector<int>* sq){
 }
 
 
-void ProcessRelation(sqlite3* db,char* synset,char* relation,vector<int>* sq){
+void ProcessRelation(sqlite3* db,char* synset,const char* relation,vector<int>* sq){
    char sql[1000];
    snprintf(sql,1000,"select synset1 from synlink where synset2 = '%s' and link = '%s' union select synset2 from synlink where synset1 = '%s' and link = '%s'",synset,relation,synset,relation);
    set<string> syntmp;
@@ -47,7 +48,11 @@ void ProcessRelation(sqlite3* db,char* synset,char* relation,vector<int>* sq){
 }
 
 int main(int argc, char* argv[]){
-   if(argc < 3) return -1;
+   if(argc != 4){
+      printf("input:input-filename output-filename type[0(all)/1(jp)]\n");
+      return -1;
+   }
+   type = atoi(argv[3]);
    list< Seq >::iterator sqset_it;
    set<int>::iterator word_it;
    sqlite3 *db;
@@ -103,7 +108,6 @@ int main(int argc, char* argv[]){
          fprintf(fp,"%d\n",*iter);
       fprintf(fp,"\n");
    }
-   printf("%d\n",xxx);
    for(word_it=word.begin();word_it!=word.end();++word_it){
       printf("%d\n",*word_it);
    }

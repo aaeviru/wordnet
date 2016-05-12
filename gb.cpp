@@ -1,6 +1,4 @@
 #include "gb.h"
-const int BktSz = 6;
-const int SegSz = 1296;
 #define INPUT "/home/ec2-user/git/wordnet/result/sequence_n1.txt"
 #define SYNSET "/home/ec2-user/git/wordnet/result/synlink_n.txt"
 #define RANK "/home/ec2-user/git/wordnet/log/wordsp.txt"
@@ -17,10 +15,14 @@ void wordqsort(Word* a,int start,int end){
 int wordsp[WORDNUM + 1];
 Word word[WORDNUM];
 int main(int argc,char** argv){
-   if(argc != 2){
-      printf("input:sequence file\n");
+   
+   if(argc != 4){
+      printf("input:sequence-file BktSz SegSz\n");
       return -1;
    }
+   
+   const int BktSz = atoi(argv[2]);
+   const int SegSz = atoi(argv[3]);
    memset(wordsp,0,WORDNUM + 1);
    FILE* frank = fopen(RANK,"r");
    int wordid,sp;

@@ -25,6 +25,7 @@ class Synset{
          return relationships;
       }
 };
+int callback(void *data, int argc, char **argv, char **azColName);
 int callback2(void *data, int argc, char **argv, char **azColName);
 int callback3(void *data, int argc, char **argv, char **azColName);
 int callback4(void *data, int argc, char **argv, char **azColName);

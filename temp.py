@@ -1,5 +1,5 @@
-fin = open("result/sequence_test.txt","r")
-fout = open("result/sequence_test1.txt","w")
+fin = open("result/sequence_all_test.txt","r")
+fout = open("result/sequence_all_test1.txt","w")
 num = 0
 print len("\n")
 for line in fin:

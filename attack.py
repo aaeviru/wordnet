@@ -48,11 +48,18 @@ for line in fbk:
 fbk.close()
 
 a = np.load('/home/ec2-user/data/classinfo/vt.npy')
-
+s = np.load('/home/ec2-user/data/classinfo/sigma.npy')
+s = 1 / s
 total = 0
 hit = 0
 notin = 0
 totalterm = 0
+maxnum = 0
+maxnum_1 = 0
+aver1 = 0.0;
+aver2 = 0.0;
+aver3 = 0.0;
+aver4 = 0.0;
 
 for root, dirs, files in os.walk(sys.argv[2]):
         for name in files:
@@ -63,17 +70,47 @@ for root, dirs, files in os.walk(sys.argv[2]):
 
                         lines = fin.readlines()
                         vec = np.zeros(623)
+                        vec_t = np.zeros(623)
                         for line in lines:
                             term = line.strip('\n')
+                            if term in wtol:
+                                w = np.sqrt(len(wtol[term]))
+                                tmp = np.zeros(623)
+                                for j in wtol[term]:
+                                    tmp = tmp + w * (s * a[:,j])
+                                vec_t = vec_t + tmp
+
                             if term in bk:
                                 for i in bk[term]:
                                     tmp = np.zeros(623)
                                     if i in wtol:
                                         w = np.sqrt(len(wtol[i]))
                                         for j in wtol[i]:
-                                            tmp = tmp + w * a[:,j]
+                                            tmp = tmp + w * (s * a[:,j])
                                 vec = vec + tmp
-                        mmax = vec.argmax()
+                        if vec.max() < 0.0000000000001:
+                            print vec.max()
+                            print filename 
+                            continue
+                        mmax = vec.argmax() 
+                        if mmax == vec_t.argmax():
+                            maxnum = maxnum + 1
+                        else:
+                            vec_t[vec_t.argmax()] = 0;
+                            if mmax == vec_t.argmax():
+                                maxnum_1 = maxnum_1 + 1
+                        mmax_1 = vec.max()
+                        aver4 = aver4 + mmax_1 / np.average(vec)
+                        vec[vec.argmax()] = 0
+                        mmax_2 = vec.max()
+                        vec[vec.argmax()] = 0
+                        mmax_3 = vec.max()
+                        vec[vec.argmax()] = 0
+                        mmax_4 = vec.max()
+                        aver1 = aver1 + mmax_1 / mmax_2
+                        aver2 = aver2 + mmax_2 / mmax_3
+                        aver3 = aver3 + mmax_3 / mmax_4
+
                         for line in lines:
                             total = total + 1
                             term = line.strip('\n')
@@ -86,11 +123,10 @@ for root, dirs, files in os.walk(sys.argv[2]):
                                         totalterm = totalterm + 1
                                         w = np.sqrt(len(wtol[i]))
                                         for j in wtol[i]:
-                                            tmp = tmp + w * a[:,j]
+                                            tmp = tmp + w * (s * a[:,j])
                                     if tmp[mmax] > check:
                                         check = tmp[mmax]
                                         tt = i
-                                print term,tt
                                 if tt == term:
                                     hit = hit + 1
                             else:
@@ -98,4 +134,15 @@ for root, dirs, files in os.walk(sys.argv[2]):
 print "total:",total
 print "hit:",hit
 print "notin:",notin
-print "totalterm:",totalterm
+print "in",total-notin
+print "presion",1.0*hit/(total-notin)
+print "totalterm::",totalterm
+print "per term:",1.0*totalterm/(total-notin)
+total = 2908
+print "maxnum:",maxnum
+print "maxnum_1",maxnum_1
+print "aver1",aver1/total
+print "aver2",aver2/total
+print "aver3",aver3/total
+print "aver4",aver4/total
+

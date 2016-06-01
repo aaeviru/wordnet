@@ -2,14 +2,12 @@
 
 using namespace std;
 
-static int callback(void *data, int argc, char **argv, char **azColName){
+int callback(void *data, int argc, char **argv, char **azColName){
    int i;
    
-   fprintf(stderr, "%s\n", (const char*)data);
    for(i=0; i<argc; i++){
       printf("%s = %s ", azColName[i], argv[i] ? argv[i] : "NULL");
    }
-//   num += argv[0] ? 1:0;
    printf("\n");
    return 0;
 }

@@ -1,25 +1,28 @@
 #include "wordnet.h"
 #include <stdlib.h>
+#include <dirent.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdio.h>
+#include <string.h>
+#include <map>
+#include <set>
+#include <string>
+#include <vector>
 
-class Word{
+using namespace std;
+
+
+class Synnum{
    public:
-      int wordid;
-      int spec;
-      Word(){
-         this->wordid = 0;
-         this->spec = 0;
+		string syn;
+      int hos;
+      Synnum(){
+         this->hos = 0;
       }
-      Word(int wordid,int spec){
-         this->wordid = wordid;
-         this->spec = spec;
-      }
-      void set(int wordid,int spec){
-         this->wordid = wordid;
-         this->spec = spec;
-      }
-
-      void print(){
-         printf("%d %d\n",wordid,spec);
+      Synnum(string syn,int hos){
+         this->syn = syn;
+         this->hos = hos;
       }
 };
 

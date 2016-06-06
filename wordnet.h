@@ -6,6 +6,7 @@
 #include <list>
 #include "travedir.h"
 #include <set>
+#include <vector>
 
 class Synset{
    public:
@@ -32,6 +33,7 @@ int callback4(void *data, int argc, char **argv, char **azColName);
 int callback5(void *data, int argc, char **argv, char **azColName);
 int callback6(void *data, int argc, char **argv, char **azColName);
 int callback7(void *data, int argc, char **argv, char **azColName);
+int callback8(void *data, int argc, char **argv, char **azColName);
 int ssql(sqlite3 *db,char* sql,int (*callback)(void*,int,char**,char**),void* data = NULL);
 int ssql2(sqlite3 *db,char* sql);
 void db_init(sqlite3 *db);

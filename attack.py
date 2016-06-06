@@ -49,6 +49,7 @@ fbk.close()
 
 a = np.load('/home/ec2-user/data/classinfo/vt.npy')
 s = np.load('/home/ec2-user/data/classinfo/sigma.npy')
+kk = 623
 s = 1 / s
 total = 0
 hit = 0
@@ -69,20 +70,20 @@ for root, dirs, files in os.walk(sys.argv[2]):
                         fin = open(filename,"r")
 
                         lines = fin.readlines()
-                        vec = np.zeros(623)
-                        vec_t = np.zeros(623)
+                        vec = np.zeros(kk)
+                        vec_t = np.zeros(kk)
                         for line in lines:
                             term = line.strip('\n')
                             if term in wtol:
                                 w = np.sqrt(len(wtol[term]))
-                                tmp = np.zeros(623)
+                                tmp = np.zeros(kk)
                                 for j in wtol[term]:
                                     tmp = tmp + w * (s * a[:,j])
                                 vec_t = vec_t + tmp
 
                             if term in bk:
                                 for i in bk[term]:
-                                    tmp = np.zeros(623)
+                                    tmp = np.zeros(kk)
                                     if i in wtol:
                                         w = np.sqrt(len(wtol[i]))
                                         for j in wtol[i]:
@@ -118,7 +119,7 @@ for root, dirs, files in os.walk(sys.argv[2]):
                                 check = -1
                                 tt = ""
                                 for i in bk[term]:
-                                    tmp = np.zeros(623)
+                                    tmp = np.zeros(kk)
                                     if i in wtol:
                                         totalterm = totalterm + 1
                                         w = np.sqrt(len(wtol[i]))

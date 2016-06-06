@@ -34,7 +34,8 @@ int callback3(void *data, int argc, char **argv, char **azColName){
 }
 
 int callback4(void *data, int argc, char **argv, char **azColName){
-   ((set<string>*)data)->insert(argv[0]);
+	if(strlen(argv[0]) > 0)   
+		((set<string>*)data)->insert(argv[0]);
    return 0;
 }
 
@@ -48,6 +49,12 @@ int callback7(void *data, int argc, char **argv, char **azColName){
    return 0;
 }
    
+int callback8(void *data, int argc, char **argv, char **azColName){
+   if(strlen(argv[0]) > 0)
+      ((vector<string>*)data)->push_back(argv[0]);
+   return 0;
+}
+	
 
 int ssql(sqlite3 *db,char* sql,int (*callback)(void*,int,char**,char**),void* data){
    char *zErrMsg = 0;

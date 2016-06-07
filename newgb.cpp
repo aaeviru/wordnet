@@ -3,6 +3,7 @@
 
 void sqls(sqlite3 *db,const char* filepath){
 	FILE* fin = fopen(filepath,"r");
+	printf("@%s\n",filepath);
 	char tmpt[100];
 	map<string,string> terms;
    while(fscanf(fin,"%s",tmpt) != EOF){
@@ -29,7 +30,6 @@ void sqls(sqlite3 *db,const char* filepath){
 			}else{
 				terms[string(tmpt)] = *(syntmp.begin());
 			}
-			printf("%s %s\n",tmpt,terms[string(tmpt)].c_str());
 		}
 	}
 	map<string,string>::iterator itt;
@@ -43,7 +43,6 @@ void sqls(sqlite3 *db,const char* filepath){
 			ssql(db,sql,callback8,(void*)(&syntmp));
 			num = syntmp.size();
 			hops++;
-			cout<<sql<<' '<<hops<<' '<<num<<endl;
 		}
 		int j;
 		for(j=0;j<num;j++){
@@ -51,12 +50,22 @@ void sqls(sqlite3 *db,const char* filepath){
 				break;
 		}
 		for(int k=j % (num/4);k<num;k=k+(num/4)){
-			string wordtmp;
-			snprintf(sql,1000,"select lemma from word where wordid in (select wordid from sense where synset = '%s')",syntmp[k].c_str());
-			ssql(db,sql,callback7,(void*)(&wordtmp));
-			printf("%s\n",wordtmp.c_str());
+			if(k == j){
+				printf("%s\n",itt->first.c_str());
+			}else{
+				string wordtmp;
+				snprintf(sql,1000,"select lemma from word where wordid in (select wordid from sense where synset = '%s')",syntmp[k].c_str());
+				ssql(db,sql,callback7,(void*)(&wordtmp));
+				printf("%s\n",wordtmp.c_str());
+			}
 		}
+		printf("\n");
 	}
+	printf("!");
+  	for(itt=terms.begin();itt!=terms.end();++itt){
+		printf("%s ",itt->first.c_str());
+	}
+	printf("\n");
 	fclose(fin);
 
 }
@@ -79,7 +88,7 @@ int List(sqlite3 *db,const char *path) {
          if(_dirName.at(_dirName.length()-1) == 't'){
          //      printf("%s\n",ent->d_name);
          	sqls(db,fullDirPath.c_str()); 
-				return -1;
+				//return -1;
 			}
          	//getchar(); 
 		} else {
@@ -106,7 +115,6 @@ int main(int argc,char** argv){
       fprintf(stderr, "Can't open database: %s\n", sqlite3_errmsg(db));
       exit(0);
    }else{
-      fprintf(stderr, "Opened database successfully\n");
    }
 	List(db,"/home/ec2-user/data/topics");
 /*

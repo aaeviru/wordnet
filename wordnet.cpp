@@ -13,7 +13,7 @@ int callback(void *data, int argc, char **argv, char **azColName){
 }
 
 int callback2(void *data, int argc, char **argv, char **azColName){
-   *(int*)data = atoi(argv[0]);
+	*(int*)data = atoi(argv[0]);
    return 0;
 }
 

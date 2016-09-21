@@ -41,11 +41,13 @@ int main(int argc,char** argv){
    const int N = i;
    const int Seg = (N + SegSz - 1) / SegSz;
    const int Bkz = (N + BktSz * SegSz - 1) / (BktSz * SegSz);
-   for(i=0;i<Seg;i++){
-      int start = i*SegSz;
-      int end = (i+1)*SegSz>N?N:(i+1)*SegSz;
-      wordqsort(word,start,end);
-   }   
+	if(SegSz > 1){
+		for(i=0;i<Seg;i++){
+			int start = i*SegSz;
+			int end = (i+1)*SegSz>N?N:(i+1)*SegSz;
+			wordqsort(word,start,end);
+		}   
+	}
    
    for(i=0;i<Bkz;i++){
       for(int k=0;k<SegSz;k++){

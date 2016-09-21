@@ -9,10 +9,7 @@ void ProcessSynset(sqlite3* db,const char* synset,vector<int>* sq){
    char sql[1000];
    int wordid[1000];
    wordid[0] = 0;
-   if( type == 0)
-      snprintf(sql,1000,"select wordid from sense where synset = '%s'",synset);
-   else
-      snprintf(sql,1000,"select wordid from sense where synset = '%s' and lang = 'jpn'",synset);
+	snprintf(sql,1000,"select wordid from sense where synset = '%s'",synset);
    //printf("%s\n",sql);
    ssql(db,sql,callback3,(void*)wordid);
    vector<int>::iterator iter;
@@ -103,10 +100,15 @@ int main(int argc, char* argv[]){
    vector<int>::iterator iter;
    fclose(fp);
    fp = fopen(argv[2],"w");
-   for (sqset_it=sqset.begin(); sqset_it!=sqset.end(); ++sqset_it){
-      for(iter=sqset_it->seqvec.begin();iter!=sqset_it->seqvec.end();++iter)
-         fprintf(fp,"%d\n",*iter);
-      fprintf(fp,"\n");
+	for(iter=sqset.begin()->seqvec.begin();iter!=sqset.begin()->seqvec.end();++iter){
+		if(type == 1){
+			char sql[1000];
+			snprintf(sql,1000,"select count(*) from word where wordid = %d and lang = 'jpn'",*iter);
+			int jp = 0;
+			ssql(db,sql,callback2,(void*)(&jp));
+			if(jp == 1)	fprintf(fp,"%d\n",*iter);
+		}else
+			fprintf(fp,"%d\n",*iter);
    }
    for(word_it=word.begin();word_it!=word.end();++word_it){
       printf("%d\n",*word_it);

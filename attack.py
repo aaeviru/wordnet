@@ -87,8 +87,8 @@ for root, dirs, files in os.walk(sys.argv[2]):
                                     if i in wtol:
                                         w = np.sqrt(len(wtol[i]))
                                         for j in wtol[i]:
-                                            tmp = tmp + w * (s * a[:,j])
-                                vec = vec + tmp
+                                            tmp = tmp + abs(w * (s * a[:,j]))
+                                    vec = vec + tmp
                         if vec.max() < 0.0000000000001:
                             print vec.max()
                             print filename 

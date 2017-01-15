@@ -3,6 +3,7 @@ synset.cpp:	create synset list
 synlink.cpp	sort synset by synlinks it has  
 main.cpp:	create term-sequence  
 gb.cpp:		create term-basket from word-sequence  
+newgb.cpp:	create dummy-query in related synset
 wordnet.cpp:	functions about wordnet,sqlite  
 
 

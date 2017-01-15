@@ -9,14 +9,15 @@ from scipy import sparse as sp
 from os import path
 
 sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
-from pythonlib import getapy as gp
+from pythonlib import semantic as sm
+
 
 
 if len(sys.argv) != 4:
     print "input: gb file,topic folder,otype\n"
     exit(0)
 
-fwl = open("/home/ec2-user/git/wordnet/result/wordlist.txt","r")
+fwl = open("/home/ec2-user/git/statresult/wordlist-lda.txt","r")
 wtol = {}
 itow = {}
 prev = -1
@@ -34,11 +35,10 @@ for line in fwl:
         prev = i
     elif len(tmp) == 2:
         itow[int(tmp[0])] = tmp[1]  
-    else:
-        print line
-        raw_input()
-
 fwl.close()
+
+wtolu = sm.readwl("/home/ec2-user/git/statresult/wordslist_dsw_top1000.txt")
+
 
 tmp = []
 bk = {}
@@ -53,11 +53,11 @@ for line in fbk:
 fbk.close()
 
 otype = int(sys.argv[3])
-a = np.load('/home/ec2-user/data/classinfo/vt.npy')
-s = np.load('/home/ec2-user/data/classinfo/sigma.npy')
-kk = 623
+a = np.load('/home/ec2-user/git/statresult/lda-64-2000-top1000-phi.npy')
+s = np.load('/home/ec2-user/git/statresult/lda-64-2000-top1000-pz.npy')
+
+kk = a.shape[0]
 user = 0
-s = 1 / s
 total = 0
 hit = 0
 notin = 0
@@ -68,13 +68,7 @@ aver1 = 0.0
 aver2 = 0.0
 aver3 = 0.0
 aver4 = 0.0
-srp20 = 0.0
-srp100 = 0.0
-srp500 = 0.0
-srp1000 = 0.0
 
-wam = gp.init("NTCIR")
-getar = gp.intp(1000)
 
 for root, dirs, files in os.walk(sys.argv[2]):
         for name in files:
@@ -86,26 +80,22 @@ for root, dirs, files in os.walk(sys.argv[2]):
                         if len(lines) > 100:
                             continue
                         user = user + 1
-                        print filename,user
-                        vec = np.zeros(kk)
-                        vec_t = np.zeros(kk)
+                        r = []
+                        d = []
                         for line in lines:
                             term = line.strip('\n')
                             if term in wtol:
-                                w = np.sqrt(len(wtol[term]))
-                                tmp = np.zeros(kk)
                                 for j in wtol[term]:
-                                    tmp = tmp + w * (s * a[:,j])
-                                vec_t = vec_t + tmp
+                                    r.append(itow[j])     
 
                             if term in bk:
                                 for i in bk[term]:
                                     tmp = np.zeros(kk)
                                     if i in wtol:
-                                        w = np.sqrt(len(wtol[i]))
                                         for j in wtol[i]:
-                                            tmp = tmp + abs(w * (s * a[:,j]))
-                                    vec = vec + tmp
+                                            d.append(itow[j])
+                        vec = sm.vecof3(r,a,s,wtolu,kk)
+                        vec_t = sm.vecof3(d,a,s,wtolu,kk)
                         if vec.max() < 0.0000000000001:
                             print vec.max()
                             print filename 
@@ -153,20 +143,8 @@ for root, dirs, files in os.walk(sys.argv[2]):
                                     hit = hit + 1
                             else:
                                 notin = notin + 1
-                        srlen = gp.search(wam,x,getar,1000)
-                        rqn = np.array([getar[i] for i in range(srlen)])
-                        srlen = gp.search(wam,y,getar,1000)
-	                dqn = np.array([getar[i] for i in range(srlen)])
-                        srp20 = srp20 + len(np.intersect1d(rqn[0:20],dqn[0:20]))*1.0/20.0
-			srp100 = srp100 + len(np.intersect1d(rqn[0:100],dqn[0:100]))*1.0/100.0
-			srp500 = srp500 + len(np.intersect1d(rqn[0:500],dqn[0:500]))*1.0/500.0
-			srp1000 = srp1000 + len(np.intersect1d(rqn,dqn))*1.0/len(rqn)
                         if otype == 1:
                             print "presion",1.0*hit/(total-notin)
-                            print 'srp20:',srp20*1.0/user
-                            print 'srp100:',srp100*1.0/user
-                            print 'srp500:',srp500*1.0/user
-                            print 'srp1000:',srp1000*1.0/user
 
 
 
@@ -184,8 +162,3 @@ print "aver1",aver1/total
 print "aver2",aver2/total
 print "aver3",aver3/total
 print "aver4",aver4/total
-print 'srp20/(total+usernum):',srp20*1.0/(total)
-print 'srp100/(total+usernum):',srp100*1.0/(total)
-print 'srp500/(total+usernum):',srp500*1.0/(total)
-print 'srp1000/(total+usernum):',srp1000*1.0/(total)
-

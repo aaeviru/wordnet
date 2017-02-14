@@ -128,15 +128,16 @@ for root, dirs, files in os.walk(sys.argv[2]):
                                 check = -1
                                 tt = ""
                                 for i in bk[term]:
-                                    tmp = np.zeros(kk)
+                                    tmp = 1 
                                     if i in wtol:
                                         totalterm = totalterm + 1
-                                        w = np.sqrt(len(wtol[i]))
                                         for j in wtol[i]:
-                                            tmp = tmp + w * (s * a[:,j])
-                                    if tmp[mmax] > check:
-                                        check = tmp[mmax]
-                                        tt = i
+                                            tmp = tmp * a[:,j]
+                                        tmp = tmp * s
+                                        tmp = tmp/tmp.sum()
+                                        if tmp[mmax] > check:
+                                            check = tmp[mmax]
+                                            tt = i
                                 x.append(term)
                                 y.append(tt)
                                 if tt == term:

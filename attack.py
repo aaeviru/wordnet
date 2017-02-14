@@ -73,8 +73,9 @@ srp100 = 0.0
 srp500 = 0.0
 srp1000 = 0.0
 
-wam = gp.init("NTCIR")
-getar = gp.intp(1000)
+if otype == 2:
+    wam = gp.init("NTCIR")
+    getar = gp.intp(1000)
 
 for root, dirs, files in os.walk(sys.argv[2]):
         for name in files:
@@ -86,7 +87,8 @@ for root, dirs, files in os.walk(sys.argv[2]):
                         if len(lines) > 100:
                             continue
                         user = user + 1
-                        print filename,user
+                        if otype == 1:
+                            print filename,user
                         vec = np.zeros(kk)
                         vec_t = np.zeros(kk)
                         for line in lines:
@@ -153,14 +155,15 @@ for root, dirs, files in os.walk(sys.argv[2]):
                                     hit = hit + 1
                             else:
                                 notin = notin + 1
-                        srlen = gp.search(wam,x,getar,1000)
-                        rqn = np.array([getar[i] for i in range(srlen)])
-                        srlen = gp.search(wam,y,getar,1000)
-	                dqn = np.array([getar[i] for i in range(srlen)])
-                        srp20 = srp20 + len(np.intersect1d(rqn[0:20],dqn[0:20]))*1.0/20.0
-			srp100 = srp100 + len(np.intersect1d(rqn[0:100],dqn[0:100]))*1.0/100.0
-			srp500 = srp500 + len(np.intersect1d(rqn[0:500],dqn[0:500]))*1.0/500.0
-			srp1000 = srp1000 + len(np.intersect1d(rqn,dqn))*1.0/len(rqn)
+                        if otype == 2:
+                            srlen = gp.search(wam,x,getar,1000)
+                            rqn = np.array([getar[i] for i in range(srlen)])
+                            srlen = gp.search(wam,y,getar,1000)
+                            dqn = np.array([getar[i] for i in range(srlen)])
+                            srp20 = srp20 + len(np.intersect1d(rqn[0:20],dqn[0:20]))*1.0/20.0
+                            srp100 = srp100 + len(np.intersect1d(rqn[0:100],dqn[0:100]))*1.0/100.0
+                            srp500 = srp500 + len(np.intersect1d(rqn[0:500],dqn[0:500]))*1.0/500.0
+                            srp1000 = srp1000 + len(np.intersect1d(rqn,dqn))*1.0/len(rqn)
                         if otype == 1:
                             print "presion",1.0*hit/(total-notin)
                             print 'srp20:',srp20*1.0/user
@@ -184,8 +187,9 @@ print "aver1",aver1/total
 print "aver2",aver2/total
 print "aver3",aver3/total
 print "aver4",aver4/total
-print 'srp20/(total+usernum):',srp20*1.0/(total)
-print 'srp100/(total+usernum):',srp100*1.0/(total)
-print 'srp500/(total+usernum):',srp500*1.0/(total)
-print 'srp1000/(total+usernum):',srp1000*1.0/(total)
+if otype == 2:
+    print 'srp20/(total+usernum):',srp20*1.0/(total)
+    print 'srp100/(total+usernum):',srp100*1.0/(total)
+    print 'srp500/(total+usernum):',srp500*1.0/(total)
+    print 'srp1000/(total+usernum):',srp1000*1.0/(total)
 
